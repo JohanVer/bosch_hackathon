@@ -14,8 +14,6 @@ void bosch_navigation::start(){
     while (ros::ok()) {
         ros::spinOnce();
         loop_rate.sleep();
-
-
     }
 }
 

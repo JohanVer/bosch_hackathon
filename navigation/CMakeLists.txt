@@ -31,8 +31,10 @@ catkin_package(
 
 add_library(nav_lib
     src/bosch_navigation.cpp
+    src/bosch_visualization.cpp
     include/bosch_navigation.h
- )
+    include/bosch_visualization.h
+)
 
 target_link_libraries ( nav_lib ${OpenCV_LIBS} ${catkin_LIBRARIES} )
 

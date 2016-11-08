@@ -18,6 +18,8 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
+#include "bosch_visualization.h"
+
 namespace bosch_hackathon{
 
 class bosch_navigation
@@ -32,7 +34,6 @@ private:
     ros::Publisher vel_cmd_publisher_;
     ros::Subscriber occ_map_sub_;
     tf::TransformListener tf_listener_;
-
 };
 
 }
