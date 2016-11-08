@@ -12,6 +12,9 @@ else()
         message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
+find_package(catkin REQUIRED cmake_modules)
+find_package(Eigen3 REQUIRED)
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -20,13 +23,15 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   sensor_msgs
   tf
+  occupancy_grid_utils
+  cmake_modules
 )
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES
-  CATKIN_DEPENDS roscpp rospy std_msgs image_transport cv_bridge sensor_msgs tf
-  DEPENDS system_lib
+  CATKIN_DEPENDS roscpp rospy std_msgs image_transport cv_bridge sensor_msgs tf occupancy_grid_utils
+  DEPENDS system_lib Eigen
 )
 
 add_library(nav_lib
@@ -38,10 +43,10 @@ add_library(nav_lib
 
 target_link_libraries ( nav_lib ${OpenCV_LIBS} ${catkin_LIBRARIES} )
 
-include_directories(  ${catkin_INCLUDE_DIRS}  ${OpenCV_INCLUDE_DIRS}  include )
+include_directories(  ${catkin_INCLUDE_DIRS}  ${OpenCV_INCLUDE_DIRS} ${Eigen_INCLUDE_DIRS}  include )
 
 find_package( OpenCV 3.1 REQUIRED )
 
 add_executable(run_navigation src/main.cpp include/main.h ${INCLUDE_GLOBAL_HEADERS})
-target_link_libraries ( run_navigation nav_lib ${OpenCV_LIBS} ${catkin_LIBRARIES} )
+target_link_libraries ( run_navigation nav_lib ${OpenCV_LIBS} ${catkin_LIBRARIES} ${Eigen_LIBRARIES} )
 

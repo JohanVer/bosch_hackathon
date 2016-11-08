@@ -32,9 +32,9 @@ void bosch_visualization::sendCube(const std::string &frame, const std::string &
     marker.pose.orientation.z = 0.0;
     marker.pose.orientation.w = 1.0;
 
-    marker.scale.x = 1.0;
-    marker.scale.y = 1.0;
-    marker.scale.z = 1.0;
+    marker.scale.x = 0.1;
+    marker.scale.y = 0.1;
+    marker.scale.z = 0.1;
 
     marker.color.r = 0.0f;
     marker.color.g = 1.0f;

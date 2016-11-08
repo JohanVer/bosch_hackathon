@@ -40,6 +40,7 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>cmake_modules</buildtool_depend>
   <depend>roscpp</depend>
   <depend>rospy</depend>
   <depend>std_msgs</depend>
@@ -47,6 +48,8 @@
   <depend>sensor_msgs</depend>
   <depend>image_transport</depend>
   <depend>tf</depend>
+  <depend>occupancy_grid_utils</depend>
+  <depend>cmake_modules</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

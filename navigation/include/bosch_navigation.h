@@ -18,7 +18,12 @@
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
+#include "Eigen/Dense"
 #include "bosch_visualization.h"
+#include "occupancy_grid_utils/coordinate_conversions.h"
+#include "occupancy_grid_utils/ray_tracer.h"
+#include "tf_conversions/tf_eigen.h"
+
 
 namespace bosch_hackathon{
 
@@ -34,6 +39,11 @@ private:
     ros::Publisher vel_cmd_publisher_;
     ros::Subscriber occ_map_sub_;
     tf::TransformListener tf_listener_;
+    bosch_hackathon::bosch_visualization vis_;
+    nav_msgs::OccupancyGrid current_local_map_;
+
+
+    bool occ_initialized;
 };
 
 }
