@@ -6,6 +6,7 @@
 #include <tf/transform_listener.h>
 #include "std_msgs/Header.h"
 #include "nav_msgs/OccupancyGrid.h"
+#include "geometry_msgs/PoseStamped.h"
 
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
@@ -24,6 +25,10 @@
 #include "occupancy_grid_utils/ray_tracer.h"
 #include "tf_conversions/tf_eigen.h"
 
+#define CIRCLE_DIVIDER 20.0
+#define DIR_WEIGHT 1.0
+#define RAY_WEIGHT 50.0
+#define PLAN_RANGE 1.0 // Meters
 
 namespace bosch_hackathon{
 
@@ -35,8 +40,18 @@ public:
     void gridCallback(const nav_msgs::OccupancyGrid::ConstPtr& grid_msg);
 
 private:
+    float distToLine(const Eigen::Vector2f &v, const Eigen::Vector2f &w, const Eigen::Vector2f &p);
+    float minimalDistToRay(const std::vector<geometry_msgs::Point> &occ_points, const Eigen::Vector2f &l1, const Eigen::Vector2f &l2 );
+    std::vector<geometry_msgs::Point> listOccPoints();
+    bool checkRayForCollision(const tf::Vector3 &tf_src, const tf::Vector3 &tf_dst);
+    bool getTf(const std::string &target, const std::string &source, tf::StampedTransform &tf);
+    double calcRayCost(const tf::StampedTransform &odom_T_baselink, const Eigen::Vector2f dst_e);
+    double angleBetweenVectors(const Eigen::Vector2f &vec1, const Eigen::Vector2f &vec2);
+    bool evalPossibleDirections(tf::Vector3 &next_pos, double &new_heading);
+    void sendGoal(const tf::Vector3 &position, const double &heading);
+
     ros::NodeHandle &nh_;
-    ros::Publisher vel_cmd_publisher_;
+    ros::Publisher goal_publisher_;
     ros::Subscriber occ_map_sub_;
     tf::TransformListener tf_listener_;
     bosch_hackathon::bosch_visualization vis_;
@@ -44,6 +59,7 @@ private:
 
 
     bool occ_initialized;
+    uint32_t seq_id_;
 };
 
 }
