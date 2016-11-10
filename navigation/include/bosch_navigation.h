@@ -47,7 +47,7 @@ private:
     bool getTf(const std::string &target, const std::string &source, tf::StampedTransform &tf);
     double calcRayCost(const tf::StampedTransform &odom_T_baselink, const Eigen::Vector2f dst_e);
     double angleBetweenVectors(const Eigen::Vector2f &vec1, const Eigen::Vector2f &vec2);
-    bool evalPossibleDirections(tf::Vector3 &next_pos, double &new_heading);
+    bool evalPossibleDirections(tf::Vector3 &next_pos, double &new_heading, std::vector<std::pair<tf::Vector3, bosch_hackathon::RAY_COLOR> > &eval_points);
     void sendGoal(const tf::Vector3 &position, const double &heading);
 
     ros::NodeHandle &nh_;

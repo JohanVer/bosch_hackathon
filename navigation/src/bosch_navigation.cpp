@@ -80,7 +80,7 @@ float bosch_navigation::minimalDistToRay(const std::vector<geometry_msgs::Point>
             // Update minimal distance
             if(ray_to_p < min_dist) min_dist = ray_to_p;
             tf::Vector3 p_tf = geoToTf(p);
-            vis_.sendCube("/odom", "goals",i+2, p_tf);
+            //vis_.sendCube("/odom", "goals",i+2, p_tf);
         }
     }
 
@@ -163,7 +163,7 @@ double bosch_navigation::calcRayCost(const tf::StampedTransform &odom_T_baselink
     return cost_dist_ray;
 }
 
-bool bosch_navigation::evalPossibleDirections(tf::Vector3 &next_pos, double &new_heading){
+bool bosch_navigation::evalPossibleDirections(tf::Vector3 &next_pos, double &new_heading, std::vector<std::pair<tf::Vector3, bosch_hackathon::RAY_COLOR> > &eval_points){
     tf::StampedTransform transform;
     if(!getTf("/odom", "/base_link", transform)){
         return false;
@@ -189,7 +189,6 @@ bool bosch_navigation::evalPossibleDirections(tf::Vector3 &next_pos, double &new
 
         tf::Vector3 test_p = rotate * front_dir_tf;
 
-
         Eigen::Vector2f eval_dir(test_p.x() , test_p.y());
 
         double angle = angleBetweenVectors(front_dir, eval_dir);
@@ -197,6 +196,11 @@ bool bosch_navigation::evalPossibleDirections(tf::Vector3 &next_pos, double &new
         double ray_cost = RAY_WEIGHT * calcRayCost(transform, eval_dir);
 
         double total_cost = cost_direction + ray_cost;
+        if(total_cost > 1000){
+            eval_points.push_back(std::pair<tf::Vector3, bosch_hackathon::RAY_COLOR>(test_p, bosch_hackathon::RAY_COLOR::BLOCKED));
+        }else{
+            eval_points.push_back(std::pair<tf::Vector3, bosch_hackathon::RAY_COLOR>(test_p, bosch_hackathon::RAY_COLOR::FREE));
+        }
 
         if(total_cost < min_c){
             min_c = total_cost;
@@ -239,8 +243,10 @@ void bosch_navigation::start(){
 
         tf::Vector3 next_dir;
         double new_heading = 0;
-        if(evalPossibleDirections(next_dir, new_heading)){
+        std::vector<std::pair<tf::Vector3, bosch_hackathon::RAY_COLOR> > eval_points;
+        if(evalPossibleDirections(next_dir, new_heading, eval_points)){
             sendGoal(next_dir, new_heading);
+            vis_.sendRays("/base_link", "rays", 0, tf::Vector3(1,0,0), eval_points);
         }
     }
 }

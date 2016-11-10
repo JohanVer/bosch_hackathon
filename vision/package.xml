@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>bosch_navigation</name>
+  <name>bosch_vision</name>
   <version>0.0.0</version>
   <description>The bosch_hackathon package</description>
 
@@ -32,24 +32,21 @@
   <!-- Dependencies can be catkin packages or system dependencies -->
   <!-- Examples: -->
   <!-- Use depend for packages you need at compile time: -->
-  <!--   <depend>message_generation</depend> -->
+     <depend>message_generation</depend>
   <!-- Use buildtool_depend for build tool packages: -->
   <!--   <buildtool_depend>catkin</buildtool_depend> -->
   <!-- Use run_depend for packages you need at runtime: -->
-  <!--   <run_depend>message_runtime</run_depend> -->
+     <depend>message_runtime</depend>
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <buildtool_depend>cmake_modules</buildtool_depend>
   <depend>roscpp</depend>
   <depend>rospy</depend>
   <depend>std_msgs</depend>
   <depend>cv_bridge</depend>
   <depend>sensor_msgs</depend>
   <depend>image_transport</depend>
-  <depend>tf</depend>
   <depend>occupancy_grid_utils</depend>
-  <depend>cmake_modules</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
